@@ -6,7 +6,7 @@ interface Transaction {
   to_id: number
   amount: number
   created_at: string
-  type: 'sent' | 'received'
+  type?: 'sent' | 'received'  // ✅ اجعله optional
 }
 
 interface Props {
@@ -62,43 +62,47 @@ export default function TransactionsList({ userId, refreshTrigger }: Props) {
 
   return (
     <div className="space-y-3">
-      {transactions.map((t) => (
+      {transactions.map((t) => {
+  const isSent = t.type === 'sent' || userId === t.from_id
+  
+  return (
+    <div
+      key={t.id}
+      className={`flex items-center justify-between p-3 rounded-lg ${
+        isSent ? 'bg-red-50' : 'bg-green-50'
+      }`}
+    >
+      <div className="flex items-center gap-3">
         <div
-          key={t.id}
-          className={`flex items-center justify-between p-3 rounded-lg ${
-            t.type === 'sent' ? 'bg-red-50' : 'bg-green-50'
+          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
+            isSent ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
           }`}
         >
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
-                t.type === 'sent' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
-              }`}
-            >
-              {t.type === 'sent' ? '↑' : '↓'}
-            </div>
-            <div>
-              <div className="font-medium text-sm">
-                {t.type === 'sent' ? 'إرسال' : 'استلام'}
-              </div>
-              <div className="text-xs text-gray-500">
-                {t.type === 'sent' ? `إلى: ${t.to_id}` : `من: ${t.from_id}`}
-              </div>
-            </div>
+          {isSent ? '↑' : '↓'}
+        </div>
+        <div>
+          <div className="font-medium text-sm">
+            {isSent ? 'إرسال' : 'استلام'}
           </div>
-          <div className="text-left">
-            <div
-              className={`font-bold ${
-                t.type === 'sent' ? 'text-red-600' : 'text-green-600'
-              }`}
-            >
-              {t.type === 'sent' ? '-' : '+'}
-              {t.amount} SYT
-            </div>
-            <div className="text-xs text-gray-400">{formatDate(t.created_at)}</div>
+          <div className="text-xs text-gray-500">
+            {isSent ? `إلى: ${t.to_id}` : `من: ${t.from_id}`}
           </div>
         </div>
-      ))}
+      </div>
+      <div className="text-left">
+        <div
+          className={`font-bold ${
+            isSent ? 'text-red-600' : 'text-green-600'
+          }`}
+        >
+          {isSent ? '-' : '+'}
+          {t.amount} SYT
+        </div>
+        <div className="text-xs text-gray-400">{formatDate(t.created_at)}</div>
+      </div>
+    </div>
+  )
+})}
     </div>
   )
 }
