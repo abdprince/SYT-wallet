@@ -21,7 +21,10 @@ export default function SendModal({ userId, balance, onClose, onSuccess }: Props
     try {
       const res = await fetch(`${FUNCTIONS_URL}/send-syt`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(import.meta as any).env.VITE_SUPABASE_ANON_KEY}`
+        },
         body: JSON.stringify({
           from_id: userId,
           to_id: parseInt(toId),
@@ -29,12 +32,17 @@ export default function SendModal({ userId, balance, onClose, onSuccess }: Props
         })
       })
       
+      const data = await res.json()
+      console.log('Send response:', data)
+      
       if (res.ok) {
         onSuccess()
         onClose()
+      } else {
+        console.error('Send failed:', data.error)
       }
     } catch (err) {
-      console.error(err)
+      console.error('Send error:', err)
     } finally {
       setLoading(false)
     }
