@@ -30,7 +30,7 @@ function App() {
     const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ telegram_id: telegramId })
+      body: JSON.stringify({ telegram_id: parseInt(telegramId.toString()) })
     })
     const data = await res.json()
     setBalance(data.wallet?.balance || 0)
