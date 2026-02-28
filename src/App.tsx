@@ -1,3 +1,4 @@
+import TransactionsList from './components/TransactionsList'
 import { useEffect, useState } from 'react'
 import SendModal from './components/SendModal'
 import ReceiveModal from './components/ReceiveModal'
