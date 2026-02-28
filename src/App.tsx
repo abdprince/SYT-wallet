@@ -49,14 +49,10 @@ function App() {
     })
     const data = await res.json()
     
-    console.log('Response:', JSON.stringify(data))
-    console.log('Wallet:', data.wallet)
-    console.log('Balance:', data.wallet?.balance)
-    console.log('Balance type:', typeof data.wallet?.balance)
-    
     const newBalance = data.wallet.balance
-    console.log('Setting balance to:', newBalance)
+    console.log('Before setBalance:', balance)
     setBalance(newBalance)
+    // لا تستخدم balance هون، استخدم newBalance
     
   } catch (err) {
     console.error(err)
@@ -65,6 +61,9 @@ function App() {
     setLoading(false)
   }
 }
+  useEffect(() => {
+  console.log('Balance changed to:', balance)
+}, [balance])
 
   const refreshBalance = async () => {
   if (!userId) return
