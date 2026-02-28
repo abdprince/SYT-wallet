@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import SendModal from './components/SendModal'
 import ReceiveModal from './components/ReceiveModal'
 
-const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co'
+const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co/functions/v1'
 
 function App() {
   const [userId, setUserId] = useState<number | null>(null)
