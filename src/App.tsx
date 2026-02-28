@@ -50,15 +50,14 @@ function App() {
     const data = await res.json()
     
     console.log('Response:', JSON.stringify(data))
-console.log('Wallet:', data.wallet)
-console.log('Balance:', data.wallet?.balance)
-console.log('Balance type:', typeof data.wallet?.balance)
+    console.log('Wallet:', data.wallet)
+    console.log('Balance:', data.wallet?.balance)
+    console.log('Balance type:', typeof data.wallet?.balance)
     
-    if (data.wallet && typeof data.wallet.balance === 'number') {
-      setBalance(data.wallet.balance)
-    } else {
-      setBalance(0)
-    }
+    const newBalance = data.wallet.balance
+    console.log('Setting balance to:', newBalance)
+    setBalance(newBalance)
+    
   } catch (err) {
     console.error(err)
     setBalance(0)
