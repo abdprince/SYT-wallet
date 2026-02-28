@@ -26,19 +26,27 @@ function App() {
   }, [])
 
   const createWallet = async (telegramId: number) => {
-  try {
-    const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ telegram_id: parseInt(telegramId.toString()) })
-    })
-    const data = await res.json()
-    setBalance(data.wallet?.balance || 0)
-  } catch (err) {
-    console.error(err)
-  } finally {
-    setLoading(false)
-  }
+    try {
+      const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ telegram_id: telegramId })
+      })
+      const data = await res.json()
+      
+      console.log('Response:', data)
+      
+      if (data.wallet && typeof data.wallet.balance === 'number') {
+        setBalance(data.wallet.balance)
+      } else {
+        setBalance(0)
+      }
+    } catch (err) {
+      console.error(err)
+      setBalance(0)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const refreshBalance = async () => {
