@@ -11,19 +11,21 @@ interface Transaction {
 
 interface Props {
   userId: number
+  refreshTrigger?: number
 }
 
 const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co/functions/v1'
 
-export default function TransactionsList({ userId }: Props) {
+export default function TransactionsList({ userId, refreshTrigger }: Props) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchTransactions()
-  }, [userId])
+  }, [userId, refreshTrigger])
 
   const fetchTransactions = async () => {
+    setLoading(true)
     try {
       const res = await fetch(`${FUNCTIONS_URL}/get-transactions`, {
         method: 'POST',
