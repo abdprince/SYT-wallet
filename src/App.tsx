@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
+import SendModal from './components/SendModal'
+import ReceiveModal from './components/ReceiveModal'
 
 const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co'
+'
 
 function App() {
   const [userId, setUserId] = useState<number | null>(null)
   const [balance, setBalance] = useState<number>(0)
   const [loading, setLoading] = useState(true)
+  const [showSend, setShowSend] = useState(false)
+  const [showReceive, setShowReceive] = useState(false)
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp
@@ -37,6 +42,17 @@ function App() {
     }
   }
 
+  const refreshBalance = async () => {
+    if (!userId) return
+    const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ telegram_id: userId })
+    })
+    const data = await res.json()
+    setBalance(data.wallet?.balance || 0)
+  }
+
   if (loading) return <div className="p-4 text-center">جاري التحميل...</div>
 
   return (
@@ -45,10 +61,16 @@ function App() {
         <div className="text-3xl font-bold mb-1">{balance.toLocaleString()}</div>
         <div className="text-gray-500">SYT</div>
         <div className="flex gap-2 mt-4 justify-center">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+          <button 
+            onClick={() => setShowSend(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          >
             إرسال
           </button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg">
+          <button 
+            onClick={() => setShowReceive(true)}
+            className="bg-green-500 text-white px-4 py-2 rounded-lg"
+          >
             استلام
           </button>
         </div>
@@ -63,6 +85,22 @@ function App() {
         <div className="text-xs text-gray-300 text-center mt-4">
           ID: {userId}
         </div>
+      )}
+
+      {showSend && userId && (
+        <SendModal
+          userId={userId}
+          balance={balance}
+          onClose={() => setShowSend(false)}
+          onSuccess={refreshBalance}
+        />
+      )}
+
+      {showReceive && userId && (
+        <ReceiveModal
+          userId={userId}
+          onClose={() => setShowReceive(false)}
+        />
       )}
     </div>
   )
