@@ -11,8 +11,8 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [showSend, setShowSend] = useState(false)
   const [showReceive, setShowReceive] = useState(false)
-  const [refreshTrigger, setRefreshTrigger] = useState(0)
-
+  const [_refreshTrigger, setRefreshTrigger] = useState(0)
+  
   useEffect(() => {
   console.log('useEffect started')
   
