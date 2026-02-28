@@ -11,6 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [showSend, setShowSend] = useState(false)
   const [showReceive, setShowReceive] = useState(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   useEffect(() => {
   console.log('useEffect started')
@@ -78,8 +79,8 @@ function App() {
   })
   const data = await res.json()
   setBalance(data.wallet?.balance || 0)
+  setRefreshTrigger(prev => prev + 1)  // ✅ تحديث سجل المعاملات
 }
-
   if (loading) return <div className="p-4 text-center">جاري التحميل...</div>
 
   return (
