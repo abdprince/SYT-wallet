@@ -102,10 +102,10 @@ function App() {
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-xl p-6 text-center">
-        <div className="text-gray-400">قائمة المهام</div>
-        <div className="text-sm text-gray-300 mt-2">قريباً</div>
-      </div>
+      <div className="bg-gray-100 rounded-xl p-4">
+  <div className="text-gray-600 font-medium mb-3 text-center">سجل المعاملات</div>
+  {userId && <TransactionsList userId={userId} />}
+</div>
 
       {userId && (
         <div className="text-xs text-gray-300 text-center mt-4">
