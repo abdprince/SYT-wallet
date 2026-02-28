@@ -38,39 +38,45 @@ function App() {
 }, [])
 
   const createWallet = async (telegramId: number) => {
-    try {
-      const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ telegram_id: telegramId })
-      })
-      const data = await res.json()
-      
-      console.log('Response:', data)
-      
-      if (data.wallet && typeof data.wallet.balance === 'number') {
-        setBalance(data.wallet.balance)
-      } else {
-        setBalance(0)
-      }
-    } catch (err) {
-      console.error(err)
-      setBalance(0)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const refreshBalance = async () => {
-    if (!userId) return
+  try {
     const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ telegram_id: userId })
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${(import.meta as any).env.VITE_SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ telegram_id: telegramId })
     })
     const data = await res.json()
-    setBalance(data.wallet?.balance || 0)
+    
+    console.log('Response:', data)
+    
+    if (data.wallet && typeof data.wallet.balance === 'number') {
+      setBalance(data.wallet.balance)
+    } else {
+      setBalance(0)
+    }
+  } catch (err) {
+    console.error(err)
+    setBalance(0)
+  } finally {
+    setLoading(false)
   }
+}
+
+  const refreshBalance = async () => {
+  if (!userId) return
+  const res = await fetch(`${FUNCTIONS_URL}/create-wallet`, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${(import.meta as any).env.VITE_SUPABASE_ANON_KEY}`
+    },
+    body: JSON.stringify({ telegram_id: userId })
+  })
+  const data = await res.json()
+  setBalance(data.wallet?.balance || 0)
+}
 
   if (loading) return <div className="p-4 text-center">جاري التحميل...</div>
 
