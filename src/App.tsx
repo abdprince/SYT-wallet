@@ -12,18 +12,30 @@ function App() {
   const [showReceive, setShowReceive] = useState(false)
 
   useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp
-    if (!tg) return
+  console.log('useEffect started')
+  
+  const tg = (window as any).Telegram?.WebApp
+  console.log('Telegram WebApp:', tg)
+  
+  if (!tg) {
+    console.log('No Telegram WebApp found')
+    return
+  }
 
-    tg.ready()
-    tg.expand()
-    
-    const user = tg.initDataUnsafe?.user
-    if (user) {
-      setUserId(user.id)
-      createWallet(user.id)
-    }
-  }, [])
+  tg.ready()
+  tg.expand()
+  
+  const user = tg.initDataUnsafe?.user
+  console.log('User:', user)
+  console.log('User ID:', user?.id)
+  
+  if (user) {
+    setUserId(user.id)
+    createWallet(user.id)
+  } else {
+    console.log('No user found')
+  }
+}, [])
 
   const createWallet = async (telegramId: number) => {
     try {
