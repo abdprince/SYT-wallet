@@ -3,7 +3,6 @@ import SendModal from './components/SendModal'
 import ReceiveModal from './components/ReceiveModal'
 
 const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co'
-'
 
 function App() {
   const [userId, setUserId] = useState<number | null>(null)
