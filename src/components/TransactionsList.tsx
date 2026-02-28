@@ -14,7 +14,7 @@ interface Props {
   refreshTrigger?: number
 }
 
-const FUNCTIONS_URL = "https://wtlgiygdsgohibbpylln.supabase.co/functions/v1"
+const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co/functions/v1'
 
 export default function TransactionsList({ userId, refreshTrigger }: Props) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
