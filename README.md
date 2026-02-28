@@ -11,5 +11,3 @@
 - Supabase
 - Telegram WebApp API
 - Vercel (Hosting)
-
-## 📁 هيكل المشروع
