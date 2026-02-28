@@ -7,7 +7,7 @@ interface Props {
   onSuccess: () => void
 }
 
-const FUNCTIONS_URL = 'https://your-project-ref.supabase.co/functions/v1'
+const FUNCTIONS_URL = 'https://wtlgiygdsgohibbpylln.supabase.co'
 
 export default function SendModal({ userId, balance, onClose, onSuccess }: Props) {
   const [toId, setToId] = useState('')
